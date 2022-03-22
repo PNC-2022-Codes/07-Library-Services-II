@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title> Book request </title>
+ 
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+ 
+        body {
+            width: 100%;
+            height: 100vh;
+ 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+ 
+            background: gainsboro;
+        }
+ 
+        #box {
+            width: 100%;
+            max-width: 400px;
+            min-height: 400px;
+ 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+ 
+            padding: 2rem;
+            background: white;
+            
+            border-radius: 1rem;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+        }
+ 
+        #box form {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        
+        .error {
+			color: crimson;	
+		}
+    </style>
+</head>
+<body>
+     <div id="box">
+        <h1> Book request response </h1>
+        
+        <!-- 
+			<p th:text="'Book: ' + ${title}" />
+        	<p th:text="'Person: ' + ${person}" /> 
+        -->
+        
+        <p th:attr="class=${book.isTitleCorrect()} ? '' : 'error'">
+        	Book: <span th:unless="${book.isTitleCorrect()}"> Book not found! </span>
+        	<span th:if="${book.isTitleCorrect()}" th:text="${book.title}" />
+        </p >
+        <p th:attr="class=${book.isPersonCorrect()} ? '' : 'error'">
+        	Person: <span th:unless="${book.isPersonCorrect()}"> Person not registered! </span>
+        	<span th:if="${book.isPersonCorrect()}" th:text="${book.person}" />
+        </p>
+     
+     </div>
+</body>
+</html>
