@@ -52,6 +52,25 @@
         .error {
 			color: crimson;	
 		}
+		
+		.badges {
+			width: 100%;
+			padding: 2rem;
+			
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+			
+			gap: 0.5rem;
+		}
+		
+		.badges span {
+			padding: 0.5rem 1rem;
+			color:  white;
+			background: steelblue;
+			
+			border-radius: 0.5rem;
+		}
     </style>
 </head>
 <body>
@@ -71,6 +90,10 @@
         	Person: <span th:unless="${book.isPersonCorrect()}"> Person not registered! </span>
         	<span th:if="${book.isPersonCorrect()}" th:text="${book.person}" />
         </p>
+        
+        <div class="badges">
+        	<span th:each="isbn : ${book.isbns}" th:text="${isbn}"/>
+        </div>
      
      </div>
 </body>

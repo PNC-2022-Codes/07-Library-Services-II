@@ -4,8 +4,11 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,12 +38,18 @@ public class LibraryController {
 	public String getMainPage(Model model) {
 		String time = Calendar.getInstance().getTime().toString();
 		model.addAttribute("time", time);
-		
+		model.addAttribute("search", new BookSearchDTO("", ""));
 		return "main";
 	}
 	
 	@PostMapping("/book")
-	private String requestBookPage(@ModelAttribute BookSearchDTO search, Model model) {
+	private String requestBookPage(@ModelAttribute(name="search") @Valid BookSearchDTO search, 
+			BindingResult result, Model model) {
+		
+		if(result.hasErrors()) {
+			return "main";
+		}
+		
 		String isbn = search.getIsbn();
 		
 		//Inserte proceso del servicio para filtrar la info
@@ -49,8 +58,16 @@ public class LibraryController {
 			.findAny()
 			.orElse(new Book("", ""));
 		
+		
+		List<String> isbns = library
+				.stream()
+				.map((book)-> {
+					return book.getIsbn();
+				})
+				.toList();
+		
 		BookResponseDTO response = 
-				new BookResponseDTO(foundBook.getTitle(), search.getPerson());
+				new BookResponseDTO(foundBook.getTitle(), search.getPerson(), isbns);
 		
 		//model.addAttribute("title", foundBook.getTitle());
 		//model.addAttribute("person", search.getPerson());
