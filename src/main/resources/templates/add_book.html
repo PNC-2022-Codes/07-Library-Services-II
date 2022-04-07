@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <title> Main </title>
+    <title> Add Book </title>
  
     <style>
         * {
@@ -50,46 +50,34 @@
         }
         
         .input-error {
-			border-color: crimson;
-		}
-		
-		.text-error {
-			color: crimson;
-		}
+            border-color: crimson;
+        }
+        
+        .text-error {
+            color: crimson;
+        }
     </style>
 </head>
 <body>
      <div id="box">
-        <h1> Main application </h1>
-        <h2 th:text="${time}"/>
+        <h1> Add book </h1>
         <h2 th:if="${error != null}" th:text="${error}" class ="text-error"/>
         
-        <form method="post" th:action="@{/library/book}" th:object="${search}">
-        	<input type="text" th:field="*{isbn}" placeholder="ISBN" th:errorclass="input-error"/>
-        	
-        	<div class="text-error" th:if="${#fields.hasErrors('isbn')}">
-        		<p> 
-        			Error en ISBN 
-        		</p>
-        		
-        		<ul>
-        			<li th:each="error : ${#fields.errors('isbn')}" th:text="${error}"/>
-        		</ul>
-        	</div>
-        	
-        	
-        	<input type="text" th:field="*{person}" placeholder="Student name" th:errorclass="input-error"/>
-        	<div class="text-error" th:if="${#fields.hasErrors('person')}">
-        		<p> 
-        			Error en Persona 
-        		</p>
-        		
-        		<ul>
-        			<li th:each="error : ${#fields.errors('person')}" th:text="${error}"/>
-        		</ul>
-        	</div>
-        	
-        	<input type="submit" />
+        <form method="post" th:action="@{/library/book/add}" th:object="${book}">
+            <input type="text" th:field="*{isbn}" placeholder="ISBN" th:errorclass="input-error"/>
+            <p th:if="${#fields.hasErrors('isbn')}" class="text-error"> Campo ISBN con error </p>
+            <ul th:if="${#fields.hasErrors('isbn')}" class="text-error">
+                <li th:each="error : ${#fields.errors('isbn')}" th:text="${error}"/>
+            </ul>
+            
+            <input type="text" th:field="*{title}" placeholder="Titulo" th:errorclass="input-error"/>
+            <p th:if="${#fields.hasErrors('title')}" class="text-error"> Campo Titulo con error </p>
+            <ul th:if="${#fields.hasErrors('title')}" class="text-error">
+                <li th:each="error : ${#fields.errors('title')}" th:text="${error}"/>
+            </ul>
+            
+            
+            <input type="submit"/>
         </form>
      </div>
 </body>
