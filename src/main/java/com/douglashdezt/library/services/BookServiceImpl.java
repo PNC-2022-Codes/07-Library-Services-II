@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.douglashdezt.library.models.entities.Book;
+import com.douglashdezt.library.services.utils.ServiceResponse;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -22,43 +23,55 @@ public class BookServiceImpl implements BookService {
     }
 
 	@Override
-	public void insert(Book book) {
-		library.add(book);
-		System.out.println("Libro guardado!");
-		//Add to database
+	public ServiceResponse<Void> insert(Book book) {
+		try {
+			library.add(book);
+			return new ServiceResponse<>(true);
+		} catch (Exception e) {
+			return new ServiceResponse<>(false);
+		}
 	}
 
 	@Override
-	public void delete(String isbn) {
-		library = library.stream()
+	public ServiceResponse<Void> delete(String isbn) {
+		try {
+			library = library.stream()
 					.filter(book -> !book.getIsbn().equals(isbn))
 					.toList();
+			return new ServiceResponse<>(true);
+		} catch (Exception e) {
+			return new ServiceResponse<>(false);
+		}
 	}
 
 	@Override
-	public Book getOneById(String isbn) {
+	public ServiceResponse<Book> getOneById(String isbn) {
 		Book foundBook = library.stream()
 				.filter((book)-> book.getIsbn().equals(isbn))
 				.findAny()
 				.orElse(null);
+		
+		if(foundBook == null) {
+			return new ServiceResponse<>(false);
+		}
 			
-		return foundBook;
+		return new ServiceResponse<>(true, foundBook);
 	}
 
 	@Override
-	public List<Book> getAll() {
-		return new ArrayList<>(library);
+	public ServiceResponse<List<Book>> getAll() {
+		return new ServiceResponse(new ArrayList<Book>(library));
 	}
 
 	@Override
-	public List<String> getAllIsbns() {
+	public ServiceResponse<List<String>> getAllIsbns() {
 		List<String> isbns = library
 				.stream()
 				.map((book)-> {
 					return book.getIsbn();
 				})
 				.toList();
-		return isbns;
+		return new ServiceResponse<>(isbns);
 	}
 
 }

@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <title> Book request </title>
+    <title th:text="${book.title}"/>
  
     <style>
         * {
@@ -49,55 +49,18 @@
             gap: 0.25rem;
         }
         
-        .error {
-			color: crimson;	
-		}
-		
-		.badges {
-			width: 100%;
-			padding: 2rem;
-			
-			display: flex;
-			flex-wrap: wrap;
-			justify-content: center;
-			
-			gap: 0.5rem;
-		}
-		
-		.badges a {
-			padding: 0.5rem 1rem;
-			color:  white;
-			text-decoration: none;
-			background: steelblue;
-			
-			border-radius: 0.5rem;
-		}
+        .input-error {
+            border-color: crimson;
+        }
+        
+        .text-error {
+            color: crimson;
+        }
     </style>
 </head>
 <body>
      <div id="box">
-        <h1> Book request response </h1>
-        
-        <!-- 
-			<p th:text="'Book: ' + ${title}" />
-        	<p th:text="'Person: ' + ${person}" /> 
-        -->
-        
-        <p th:attr="class=${book.isTitleCorrect()} ? '' : 'error'">
-        	Book: <span th:unless="${book.isTitleCorrect()}"> Book not found! </span>
-        	<span th:if="${book.isTitleCorrect()}" th:text="${book.title}" />
-        </p >
-        <p th:attr="class=${book.isPersonCorrect()} ? '' : 'error'">
-        	Person: <span th:unless="${book.isPersonCorrect()}"> Person not registered! </span>
-        	<span th:if="${book.isPersonCorrect()}" th:text="${book.person}" />
-        </p>
-        
-        <div class="badges">
-        	<a 	th:each="isbn : ${book.isbns}" 
-        		th:href="@{/library/book/details/{id}(id=${isbn})}"
-        		th:text="${isbn}"/>
-        </div>
-     
+        <h2 th:text="${book.title}" /> 
      </div>
 </body>
 </html>
